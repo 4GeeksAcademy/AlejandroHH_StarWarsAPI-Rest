@@ -176,14 +176,22 @@ def getUserFavorites(user_id):
     favorite_people = FavPeople.query.filter_by(user_id=user_id).all()
     favorite_planets = FavPlanets.query.filter_by(user_id=user_id).all()
 
+    serialized_people = []
+    for person in favorite_people:
+        serialized_people.append(person.serialize())
+
+    serialized_planets = []
+    for planet in favorite_planets:
+        serialized_planets.append(planet.serialize())
 
     response_body = {
         "user_id": user_id,
-        "favorite_people": favorite_people,
-        "favorite_planets": favorite_planets.serialize()
+        "favorite_people": serialized_people,
+        "favorite_planets": serialized_planets
     }
 
     return jsonify({"message": response_body}), 200
+
 
 
 
